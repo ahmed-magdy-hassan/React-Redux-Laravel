@@ -9,9 +9,12 @@ export const Item = (props)=>{
 				(props.itemdata.length > 0) ? 
 					(
 						<div>
-							<Search search={props.searchvalue}/>
-							<List MyItems={props.itemdata} search={props.searchvalue}/>
+							<div className="col-md-12  ">
+								<Search search={props.searchvalue}/>
+								<List MyItems={props.itemdata} search={props.searchvalue}/>
+							</div>
 						</div>
+
 					):
 				<h3>Featching Data</h3>
 			}

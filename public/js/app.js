@@ -54479,6 +54479,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (immutable) */ __webpack_exports__["Get_Api_Data"] = Get_Api_Data;
 /* harmony export (immutable) */ __webpack_exports__["View_Api_Data"] = View_Api_Data;
 /* harmony export (immutable) */ __webpack_exports__["search_for_item"] = search_for_item;
+/* harmony export (immutable) */ __webpack_exports__["Add_Item"] = Add_Item;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 
@@ -54498,7 +54499,7 @@ function View_Api_Data(item) {
 				type: "ViewItemsData",
 				payload: item
 			});
-		});
+		}, 100);
 	};
 }
 
@@ -54506,6 +54507,20 @@ function search_for_item(name) {
 	return {
 		type: "SEARCHITEM",
 		payload: name
+	};
+}
+
+function Add_Item(item) {
+	return function (dispatch) {
+		return __WEBPACK_IMPORTED_MODULE_0_axios___default()({
+			method: 'post',
+			url: '/api/items/create',
+			data: {
+				name: item.name,
+				desc: item.description,
+				price: item.price
+			}
+		});
 	};
 }
 
@@ -55787,8 +55802,12 @@ var Item = function Item(props) {
 		props.itemdata.length > 0 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 			'div',
 			null,
-			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__containeres_item_search__["a" /* default */], { search: props.searchvalue }),
-			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__containeres_item_list__["a" /* default */], { MyItems: props.itemdata, search: props.searchvalue })
+			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+				'div',
+				{ className: 'col-md-12  ' },
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__containeres_item_search__["a" /* default */], { search: props.searchvalue }),
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__containeres_item_list__["a" /* default */], { MyItems: props.itemdata, search: props.searchvalue })
+			)
 		) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 			'h3',
 			null,
@@ -55942,6 +55961,21 @@ var List = function (_Component) {
 	}
 
 	_createClass(List, [{
+		key: 'HandleAddItem',
+		value: function HandleAddItem(event) {
+			event.preventDefault();
+
+			var name = this.refs.name.value;
+			var description = this.refs.description.value;
+			var price = this.refs.price.value;
+			var item = {
+				name: name,
+				description: description,
+				price: price
+			};
+			this.props.Add_Item(item);
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var _this2 = this;
@@ -55955,16 +55989,73 @@ var List = function (_Component) {
 				{ className: 'row' },
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'div',
-					{ className: 'ListItem col-md-8 col-md-offset-1' },
+					{ className: 'ListItem col-md-10 col-md-offset-1' },
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						'div',
+						{ className: 'col-md-10 col-md-offset-1 additems' },
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							'h3',
+							null,
+							' Add New Item ',
+							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'glyphicon glyphicon-plus', 'aria-hidden': 'true' })
+						),
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							'div',
+							{ className: 'row' },
+							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+								'form',
+								{ onSubmit: this.HandleAddItem.bind(this) },
+								__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+									'div',
+									{ className: 'form-group col-md-12' },
+									__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+										'label',
+										{ htmlFor: 'name' },
+										'Name : '
+									),
+									__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', ref: 'name', className: 'form-control', id: 'name', placeholder: 'item name' })
+								),
+								__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+									'div',
+									{ className: 'form-group col-md-12' },
+									__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+										'label',
+										{ htmlFor: 'description' },
+										'Description : '
+									),
+									__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text', ref: 'description', className: 'form-control', id: 'description', placeholder: 'Description' })
+								),
+								__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+									'div',
+									{ className: 'form-group col-md-12' },
+									__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+										'label',
+										{ htmlFor: 'Price' },
+										'Price : '
+									),
+									__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'number', ref: 'price', className: 'form-control', id: 'Price', placeholder: '12' })
+								),
+								__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+									'div',
+									{ className: 'form-group col-md-5' },
+									__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+										'button',
+										{ type: 'submit', className: 'btn btn-primary' },
+										'Add Item'
+									)
+								)
+							)
+						)
+					),
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 						'h3',
-						null,
+						{ className: 'col-md-12 ' },
 						'Items'
 					),
 					ItemFilter.map(function (link, i) {
 						return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 							'ul',
-							{ className: 'list-group col-md-6 col-md-offset-1 ', key: i },
+							{ className: 'list-group col-md-6  ', key: i },
 							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 								'li',
 								{ className: 'list-group-item' },
@@ -56014,8 +56105,8 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 var mapDispachToProps = function mapDispachToProps(dispatch) {
 	return {
-		search_for_item: function search_for_item(search) {
-			dispatch(Object(__WEBPACK_IMPORTED_MODULE_2__actions_ItemActions__["search_for_item"])(search));
+		Add_Item: function Add_Item(item) {
+			dispatch(Object(__WEBPACK_IMPORTED_MODULE_2__actions_ItemActions__["Add_Item"])(item));
 		}
 	};
 };
@@ -56068,7 +56159,7 @@ var Search = function (_Component) {
 				{ className: 'row' },
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'div',
-					{ className: 'SearchItem col-md-8 col-md-offset-1' },
+					{ className: 'SearchItem col-md-10 col-md-offset-1' },
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 						'h3',
 						null,

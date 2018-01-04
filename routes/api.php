@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 */
 Route::group(['prefix' => 'items'], function() {
     Route::get('all','ItemController@AllItems');
+
+    Route::post('create','ItemController@store');
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

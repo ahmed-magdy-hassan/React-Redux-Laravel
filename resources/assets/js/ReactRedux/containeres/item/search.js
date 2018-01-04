@@ -11,7 +11,7 @@ class Search extends Component{
 		return(
 
 			<div className="row">
-				<div className="SearchItem col-md-8 col-md-offset-1">
+				<div className="SearchItem col-md-10 col-md-offset-1">
 					<h3>Search Component</h3>
 					<div className="form-group">
 						<label htmlFor="itemname">Item Name :</label>

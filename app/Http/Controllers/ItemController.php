@@ -19,4 +19,19 @@ class ItemController extends Controller
     			'item' => $items
     	],200);
     }
+
+    public function store(Request $request){
+        $item = new Item();
+        $item->name = $request->get('name');
+        $item->desc = $request->get('desc');
+        $item->price = $request->get('price');
+        if (!$item->save()) {
+            return response()->json([
+                'Message' => 'item can not be saved'
+            ],401);
+        }
+        return response()->json([
+                'item' => $item
+        ],200);   
+    }
 }
