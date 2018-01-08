@@ -1,4 +1,5 @@
 const Item = {
+    add_menu_toggle:false,
     search: '',
     data : {
         item:{}

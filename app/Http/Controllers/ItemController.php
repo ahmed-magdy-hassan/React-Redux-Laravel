@@ -7,8 +7,7 @@ use App\Item;
 
 class ItemController extends Controller
 {
-    public function AllItems()
-    {
+    public function AllItems(){
     	$items = Item::all();
     	if (!$items->count()) {
     		return response()->json([
@@ -33,5 +32,24 @@ class ItemController extends Controller
         return response()->json([
                 'item' => $item
         ],200);   
+    }
+
+    public function destroy($id){
+        $item = Item::find($id);
+        if (!$item) {
+            return response()->json([
+                'Message' => 'item not found'
+            ],404);
+        }
+
+        if (!$item->delete()) {
+            return response()->json([
+                'Message' => 'item can not be deleted'
+            ],401);
+        }
+
+        return response()->json([
+                'Message' => 'item deleted successfully'
+        ],201);
     }
 }

@@ -41,3 +41,15 @@ export function Add_Item(item){
 	};
 }
 
+export function Delete_Item(item_id){
+	return (dispatch)=>{
+		return axios({
+					  method: 'delete',
+					  url: '/api/items/delete/'+item_id
+					});
+	};
+}
+
+
+
+

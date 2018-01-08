@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
-import {search_for_item , Add_Item} from '../../actions/ItemActions';
+import {search_for_item , Add_Item , Get_Api_Data ,Delete_Item} from '../../actions/ItemActions';
 
 
 
@@ -18,10 +18,15 @@ class List extends Component {
 			price:price
 		}
 		this.props.Add_Item(item);
-
+		//get items from api again
+		this.props.GetItems();
 		this.refs.name.value = '';
 		this.refs.description.value = '';
 		this.refs.price.value = 0;
+	}
+	DeleteItem(item_id){
+		this.props.DeleteItem(item_id);
+		this.props.GetItems();
 	}
 	render(){
 		let ItemFilter = this.props.MyItems.filter(
@@ -62,7 +67,15 @@ class List extends Component {
 							(
 								ItemFilter.map( (link,i) => 
 									<ul className="list-group col-md-6  " key={i}>
-										<li className="list-group-item"> <span className="label label-primary">{link.id}</span></li>
+										<li className="list-group-item clearfix"> 
+											<span className="label label-primary pull-left">{link.id}</span> 
+											<button type="button" className="pull-right btn btn-info btn-xs">
+												<span className="glyphicon glyphicon-edit " aria-hidden="true"></span>
+											</button>
+											<button type="button" className="pull-right btn btn-danger btn-xs" onClick={()=>this.DeleteItem(link.id)}>
+												<span className="glyphicon glyphicon-remove " aria-hidden="true"></span>
+											</button>
+ 										</li>
 										<li className="list-group-item">Name : {link.name}</li> 
 										<li className="list-group-item">desc : {link.desc}</li> 
 										<li className="list-group-item">price : <span className="label label-primary">{link.price}</span></li> 
@@ -88,6 +101,12 @@ const mapDispachToProps = (dispatch) => {
     return {
 	        Add_Item:(item)=>{
 	        	dispatch (Add_Item(item));
+	        },
+	        GetItems:()=>{
+	        	dispatch (Get_Api_Data());
+	        },
+	        DeleteItem:(id)=>{
+	        	dispatch (Delete_Item(id));
 	        }
     };
 }

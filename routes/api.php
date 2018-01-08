@@ -16,6 +16,8 @@ Route::group(['prefix' => 'items'], function() {
     Route::get('all','ItemController@AllItems');
 
     Route::post('create','ItemController@store');
+    
+    Route::delete('delete/{id}','ItemController@destroy');
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
