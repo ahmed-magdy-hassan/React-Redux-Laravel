@@ -18,6 +18,10 @@ class List extends Component {
 			price:price
 		}
 		this.props.Add_Item(item);
+
+		this.refs.name.value = '';
+		this.refs.description.value = '';
+		this.refs.price.value = 0;
 	}
 	render(){
 		let ItemFilter = this.props.MyItems.filter(
