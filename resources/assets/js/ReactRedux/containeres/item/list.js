@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
+import { confirmAlert } from 'react-confirm-alert'; // Import
 import {search_for_item , Add_Item , Get_Api_Data ,Delete_Item} from '../../actions/ItemActions';
 
 
@@ -25,8 +26,11 @@ class List extends Component {
 		this.refs.price.value = 0;
 	}
 	DeleteItem(item_id){
-		this.props.DeleteItem(item_id);
-		this.props.GetItems();
+		var r = confirm("Delete Item With Id : "+item_id);
+		if (r == true) {
+		   	this.props.DeleteItem(item_id);
+			this.props.GetItems();
+		} 
 	}
 	render(){
 		let ItemFilter = this.props.MyItems.filter(
@@ -69,9 +73,7 @@ class List extends Component {
 									<ul className="list-group col-md-6  " key={i}>
 										<li className="list-group-item clearfix"> 
 											<span className="label label-primary pull-left">{link.id}</span> 
-											<button type="button" className="pull-right btn btn-info btn-xs">
-												<span className="glyphicon glyphicon-edit " aria-hidden="true"></span>
-											</button>
+											
 											<button type="button" className="pull-right btn btn-danger btn-xs" onClick={()=>this.DeleteItem(link.id)}>
 												<span className="glyphicon glyphicon-remove " aria-hidden="true"></span>
 											</button>
