@@ -12,13 +12,21 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group(['prefix' => 'items'], function() {
-    Route::get('all','ItemController@AllItems');
+Route::group(['middleware' => ['cors']], function () {
+	
+    Route::group(['prefix' => 'items'], function() {
+	    Route::get('all','ItemController@AllItems');
+	    Route::post('create','ItemController@store');
+	    Route::delete('delete/{id}','ItemController@destroy');
+	    Route::put('update/{id}','ItemController@update');
+	});
 
-    Route::post('create','ItemController@store');
-    
-    Route::delete('delete/{id}','ItemController@destroy');
+	Route::group(['prefix' => 'user'], function() {
+	    Route::post('register','UserController@store');
+	    Route::post('login','UserController@login');
+	});
 });
+
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

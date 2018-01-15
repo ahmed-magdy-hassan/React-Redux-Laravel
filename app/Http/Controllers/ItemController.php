@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Item;
+use JWTAuth;
 
 class ItemController extends Controller
 {
@@ -20,6 +21,13 @@ class ItemController extends Controller
     }
 
     public function store(Request $request){
+        $user = JWTAuth::parseToken()->authenticate();
+        if ($user == null) {
+           return response()->json([
+                'Message' => 'no token provided'
+            ],404);
+           
+        }
         $item = new Item();
         $item->name = $request->get('name');
         $item->desc = $request->get('desc');
@@ -33,8 +41,15 @@ class ItemController extends Controller
                 'item' => $item
         ],200);   
     }
-
+    
     public function destroy($id){
+        $user = JWTAuth::parseToken()->authenticate();
+        if ($user == null) {
+           return response()->json([
+                'Message' => 'no token provided'
+            ],404);
+           
+        }
         $item = Item::find($id);
         if (!$item) {
             return response()->json([
@@ -51,5 +66,37 @@ class ItemController extends Controller
         return response()->json([
                 'Message' => 'item deleted successfully'
         ],201);
+    }
+
+    public function update($id,Request $request)
+    {
+        $user = JWTAuth::parseToken()->authenticate();
+        if ($user == null) {
+           return response()->json([
+                'Message' => 'no token provided'
+            ],404);
+        }
+        $item = Item::find($id);
+        $item->name = $request->get('name');
+        $item->desc = $request->get('desc');
+        $item->price = $request->get('price');
+       
+        if (!$item->save()) {
+            return response()->json([
+                'Message' => 'This item Can Not be updated',
+                'item_information' => $item->toArray()
+            ],409);
+        }
+
+        return response()->json([
+            'Message' => 'This item updated successfully congrats',
+            'item_information' => $item->toArray()
+        ],200); 
+
+
+
+
+
+
     }
 }
