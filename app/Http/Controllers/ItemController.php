@@ -25,13 +25,23 @@ class ItemController extends Controller
         if ($user == null) {
            return response()->json([
                 'Message' => 'no token provided'
-            ],404);
+            ],401);
            
         }
+
+
+
+       
+            
+
+        $Image_Name = rand()+rand().'.png';
+        $Image =  $request->file('image')->storeAs('public/Itemimages',$Image_Name);
+
         $item = new Item();
         $item->name = $request->get('name');
         $item->desc = $request->get('desc');
         $item->price = $request->get('price');
+        $item->image = $Image_Name ;
         if (!$item->save()) {
             return response()->json([
                 'Message' => 'item can not be saved'
