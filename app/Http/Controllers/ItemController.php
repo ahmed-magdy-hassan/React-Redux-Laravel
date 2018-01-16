@@ -25,16 +25,11 @@ class ItemController extends Controller
         if ($user == null) {
            return response()->json([
                 'Message' => 'no token provided'
-            ],401);
-           
-        }
+            ],401);  
+        }     
 
 
-
-       
-            
-
-        $Image_Name = rand()+rand().'.png';
+        $Image_Name = $request->file('image')->getClientOriginalName();
         $Image =  $request->file('image')->storeAs('public/Itemimages',$Image_Name);
 
         $item = new Item();
@@ -51,6 +46,7 @@ class ItemController extends Controller
                 'item' => $item
         ],200);   
     }
+    
     
     public function destroy($id){
         $user = JWTAuth::parseToken()->authenticate();
