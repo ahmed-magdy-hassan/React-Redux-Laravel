@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Item;
 use JWTAuth;
+use Storage;
+
 
 class ItemController extends Controller
 {
@@ -24,7 +26,7 @@ class ItemController extends Controller
         $user = JWTAuth::parseToken()->authenticate();
         if ($user == null) {
            return response()->json([
-                'Message' => 'no token provided'
+                'Message' => 'no token provided or token has been expired'
             ],401);  
         }     
 
@@ -46,14 +48,14 @@ class ItemController extends Controller
                 'item' => $item
         ],200);   
     }
-    
+
     
     public function destroy($id){
         $user = JWTAuth::parseToken()->authenticate();
         if ($user == null) {
            return response()->json([
-                'Message' => 'no token provided'
-            ],404);
+                'Message' => 'no token provided or token is expired'
+            ],401);
            
         }
         $item = Item::find($id);
@@ -69,18 +71,23 @@ class ItemController extends Controller
             ],401);
         }
 
+        Storage::delete('/public/ItemImages/'.$item->image);
         return response()->json([
                 'Message' => 'item deleted successfully'
         ],201);
+       
     }
+
+
+
 
     public function update($id,Request $request)
     {
         $user = JWTAuth::parseToken()->authenticate();
         if ($user == null) {
            return response()->json([
-                'Message' => 'no token provided'
-            ],404);
+                'Message' => 'no token provided or token is expired'
+            ],401);
         }
         $item = Item::find($id);
         $item->name = $request->get('name');
